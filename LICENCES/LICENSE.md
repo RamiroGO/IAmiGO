@@ -1,0 +1,1 @@
+Todos los derechos de este proyecto se encuentran reservados por Ramiro Javier Galindo Orozco, cualquier uso o traspaso no autorizado de estos archivos dará control del proyecto en el que se implemente a Ramiro Javier Galindo Orozco.

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Exposición de IA</title>
+	<!-- CSS -->
+	<link href="src/css/style.css" rel="stylesheet" type="text/css">
+	<!-- Database -->
+	<script src="src/database/concepts.js"></script>
+	<script src="src/database/contexts.js"></script>
+	<script src="src/database/phrases.js"></script>
+	<script src="src/database/process.js"></script>
+	<script src="src/database/relations.js"></script>
+	<script src="src/database/textos.js"></script>
+	<script src="src/database/tokens.js"></script>
+	<script src="src/database/topics.js"></script>
+	<!-- JS -->
+	<script src="src/js/lib/load_database.js"></script>
+	<script src="src/js/lib/concepts_gestor.js"></script>
+	<script src="src/js/lib/show_gestor.js"></script>
+	<script src="src/js/lib/tool_json.js"></script>
+	<script src="src/js/show_text.js"></script>
+</head>
+
+<body>
+	<div class="sidebar">
+		<img src="src/img/logo.jpg" class="logo" alt="logo">
+		<ul class="nav">
+			<li><button class="button" onclick="showContent(['phrase', 'Competencia de las IAs', 0])">Introducción a las IA's</button>
+			<ul class="">
+				<li><button class="button hidden" onclick="showContent(['relations', 0, 0])">Historia</button></li>
+			</ul>
+		</li>
+			<li><button class="button" onclick="showContent([['phrase', 4, 0], ['phrase', 16, 0], ['phrase', 17, 0]])">Cultura</button>
+				<ul class="">
+					<li><button class="button hidden" onclick="showContent(['phrase', 0, 0])">Desarrolladores</button></li>
+					<li><button class="button hidden" onclick="showContent(['texto', 0, 0])">Ambiente Laboral</button></li>
+					<li><button class="button hidden" onclick="showContent(['texto', 0, 0])">Consumidores</button></li>
+				</ul>
+			</li>
+			<li><button class="button" onclick="showContent(['phrase', 0, 0])">Políticas</button>
+				<ul class="">
+					<li><button class="button hidden" onclick="showContent([['phrase', 1, 0], ['phrase', 2, 0]])">Desarrolladores</button></li>
+					<li><button class="button hidden" onclick="showContent(['texto', 0, 0])">Empresas</button></li>
+				</ul>
+			</li>
+			<li><button class="button" onclick="showContent(['texto', 0, 0])">Estado del Arte</button>
+				<ul class="">
+					<li><button class="button hidden" onclick="showContent([['concept', 1, 0], ['concept', 0, 0]])">Redes Neuronales</button></li>
+					<li><button class="button hidden" onclick="showContent(['texto', 0, 0])">Algoritmos
+							Genéticos</button></li>
+					<li><button class="button hidden" onclick="showContent(['texto', 0, 0])">Programación Orientada a
+							Objetos (POO)</button></li>
+					<li><button class="button hidden" onclick="showContent(['texto', 0, 0])">Teoría de grafos</button></li>
+					<li><button class="button hidden" onclick="showContent(['texto', 0, 0])">IAs Generativas</button></li>
+				</ul>
+			</li>
+			<li><button class="button" onclick="showContent(['texto', 0, 0])">Ruta de Aprendizaje para la IA's'</button>
+			</li>
+			<li><button class="button" onclick="showContent(['texto', 0, 0])">Glosario</button></li>
+			<li><button class="button" onclick="showContent(['texto', 0, 0])">Desarrolladores</button></li>
+		</ul>
+
+	</div>
+
+	<div class="content" id="texto"></div>
+</body>
+
+</html>

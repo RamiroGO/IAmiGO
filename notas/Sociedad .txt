@@ -1,0 +1,62 @@
+Sociedad 
+
+
+
+
+
+
+
+Hackear sistemas está normalizado
+Los feedback y democracia 
+Las políticas de los intereses 
+Lo inteligible se ha convertido en lo prohibido de decir.
+Paradigmas filosóficos se convierten en paradigmas tecnológicos.
+Cambia tecnológicos implican inversiones.
+El fin del arte.
+Las incompetencias de los mánagers de los programadores.
+Las puertas traseras no son accidentes 
+Aprovechamiento de las tecnologías, todos son constructos.
+- arte
+- seguridad
+- democratización de la información
+
+estética, ética y funcionalidad
+Kitaro Nishida y la lógica de la nada
+
+Los símbolos que tratan de destacar sobre el resto.
+
+Cuando les estoy explicando parte técnica es porque hay que tenerle paciencia a la cosa.
+Porque dependiendo de la IA que se esté utilizando, esta se usará de una forma u otra y es mejor 
+
+La IA solamente sabe interpretar cúmulos de datos.
+
+Tipos de valores:
+- Valores Cuantitativos:
+	- Análisis estadísticos.
+- Valores Cualitativos
+	- PLN
+
+Cultura de las personas frente a la tecnología.
+- La vanidad en el entretenimiento.
+- La vanidad en las políticas
+Cultura laboral en entornos tecnológicos.
+- Quien define los valores
+- La democracia no funciona.
+- Si le preguntas a todos como quiere que sea el resultado final de un proyecto, terminarás con un Frankenstein.
+- Sacrificar soportabilidad por velocidad.
+- Cosas que consumen tiempo:
+	- Trabajo en equipo.
+	- La arquitectura del software.
+	- La lógica deóntica al momento de establecer las proposiciones que tratan acerca de las normas/instrucciones.
+- Cuidados:
+	- Siempre hay que pasar por escrito todo los requerimientos de un proyecto, de esa manera es más fácil de memorizar y se evitarán conflictos.
+	- No tocar nada que no tenga un respaldo.
+	- No saber cuidar los horarios de trabajo y sueño durante periodos laborales prolongados.
+	- Quien requiera trasnochar o desvelarse para solucionar un problema no deberá de presentarse en una reunión.
+	- Todos los valores numéricos o conceptuales que sean desencadenantes de instrucciones deben ser revisados por un equipo de trabajo.
+	- La experiencia de un programador se basa en su conocimiento de cuando algo es posible.
+	- La experiencia está relacionado con la capacidad de adquirir nuevos conocimientos y la curva de aprendizaje.
+	- Principios de código limpio (SOLID)
+
+13 de junio
+e
