@@ -203,7 +203,8 @@ function filterCompare(array1, array2, configKey1 = [0], configKey2 = [0], confi
 		isFound,
 		scan_element1,
 		scan_element2,
-		filter_concepts = [];
+		filter_concepts = [],
+		data_insert;
 
 	// Los datos que ingresan a la función son de tipo array, deberán de recorrerse porque hay que explorar cada una de las posibilidades, a menos que el configKey pida ingreso para acotar búsqueda
 	// PENDIENTE: Hacer el proceso de ingreso con las configKeys.
@@ -227,7 +228,8 @@ function filterCompare(array1, array2, configKey1 = [0], configKey2 = [0], confi
 					// Marcar como encontrado
 					isFound = true;
 					// anexar el concepto encontrado a la lista
-					filter_concepts.push(insert_data(configInsert));
+					data_insert = insert_data(configInsert);
+					filter_concepts.push(data_insert);
 				}
 			}
 			else if (typeof (branch2) == "string") {
@@ -236,7 +238,8 @@ function filterCompare(array1, array2, configKey1 = [0], configKey2 = [0], confi
 						// Marcar como encontrado
 						isFound = true;
 						// anexar el concepto encontrado a la lista
-						filter_concepts.push(insert_data(configInsert));
+						data_insert = insert_data(configInsert);
+						filter_concepts.push(data_insert);
 					}
 				}
 			}
@@ -247,7 +250,8 @@ function filterCompare(array1, array2, configKey1 = [0], configKey2 = [0], confi
 							// Marcar como encontrado
 							isFound = true;
 							// anexar el concepto encontrado a la lista
-							filter_concepts.push(insert_data(configInsert));
+							data_insert = insert_data(configInsert);
+							filter_concepts.push(data_insert);
 						}
 					}
 				}

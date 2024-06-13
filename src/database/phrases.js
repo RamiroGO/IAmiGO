@@ -116,7 +116,6 @@ let phrases = [
 		"type": ["phrase"]
 	},
 	{
-		"type": ["tema"],
 		"text": "guerra",
 		"context": ["historia"],
 		"type": ["phrase"]

@@ -16,7 +16,7 @@ let concepts = [
 	},
 	{
 		"text": "Alan Turing (1936)",
-		"context": ["historia", "personaje"],
+		"context": ["historia", "personaje", "Alan Turing"],
 		"type": ["concept"]
 	},
 	{

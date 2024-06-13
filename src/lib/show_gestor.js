@@ -19,7 +19,7 @@ function make_structHTML(select_contents, values) {
 							if (typeof (value["text"][scan_text_value]) == "string")
 								structHTML += "<p class='" + select_contents[0] + "'>" + value["text"][scan_text_value] + "</p>";
 					}
-					else structHTML = "<p class='" + select_contents[0] + "'>" + "*" + value["text"] + "</p>";
+					else structHTML = structHTML.concat("<p class='" + select_contents[0] + "'>" + "*" + value["text"] + "</p>");
 				}
 				else {
 					value.forEach(_value => {
@@ -32,7 +32,7 @@ function make_structHTML(select_contents, values) {
 								if (typeof (_value["text"][scan_text_value]) == "string")
 									structHTML += "<p class='" + select_contents[0] + "'>" + _value["text"][scan_text_value] + "</p>";
 						}
-						else structHTML = "<p class='" + select_contents[0] + "'>" + "*" + _value["text"] + "</p>";
+						else structHTML += "<p class='" + select_contents[0] + "'>" + "*" + _value["text"] + "</p>";
 					});
 				 }
 
