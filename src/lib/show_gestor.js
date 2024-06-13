@@ -8,7 +8,7 @@ function make_structHTML(select_contents, values) {
 		if (values.length > 0) {
 			for (let scan_values = 0; scan_values != values.length; scan_values += 1) {
 				const value = values[scan_values];
-
+				
 				if ("text" in value) {
 					if (typeof (value["text"]) == "object") {
 						// El primer elemento llevará un asterisco '*'
@@ -21,7 +21,20 @@ function make_structHTML(select_contents, values) {
 					}
 					else structHTML = "<p class='" + select_contents[0] + "'>" + "*" + value["text"] + "</p>";
 				}
-				else { }
+				else {
+					value.forEach(_value => {
+						if (typeof (_value["text"]) == "object") {
+							// El primer elemento llevará un asterisco '*'
+							structHTML += "<p class='" + select_contents[0] + "'> *" + _value["text"][0] + "</p>";
+							
+							// comienza con el segundo elemento '1'.
+							for (let scan_text_value = 1; scan_text_value != _value["text"].length; scan_text_value++)
+								if (typeof (_value["text"][scan_text_value]) == "string")
+									structHTML += "<p class='" + select_contents[0] + "'>" + _value["text"][scan_text_value] + "</p>";
+						}
+						else structHTML = "<p class='" + select_contents[0] + "'>" + "*" + _value["text"] + "</p>";
+					});
+				 }
 
 				if ("img" in value)
 					if (value["img"].length != 0) {

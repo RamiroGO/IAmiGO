@@ -13,11 +13,11 @@ function showContent(selects_contents) {
 	// Analizar la petición
 	if (typeof (selects_contents[0]) == "object")
 		selects_contents.forEach(select_contents => {
-			newConcept = filter_select_concepts(database_concepts, select_contents);
+			newConcept = filter_select_concepts(database_concepts, select_contents, ["type", "context"]);
 			structHTML = edit_structHTML(structHTML, newConcept, select_contents)
 		});
 	else {
-		newConcept = filter_select_concepts(database_concepts, selects_contents);
+		newConcept = filter_select_concepts(database_concepts, selects_contents, ["type", "context"]);
 		structHTML = edit_structHTML(structHTML, newConcept, selects_contents);
 	}
 	
