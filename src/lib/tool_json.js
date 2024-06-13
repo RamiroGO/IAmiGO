@@ -63,7 +63,53 @@ function get_next_element(scans = { "step": 0, "scan": [0], "action_branch": "av
 	while (isBusy && scans["action_branch"] != "encontrado") {
 		switch (scans["action_branch"]) {
 			case "avanzar":
-				if (isEqual(configKey, [])) {
+				if (typeof (configKey) == "number") {
+					if (configKey >= 0 && configKey < branch.length) {
+						// Guardar un registro
+						scans["register"].push(branch);
+
+						// Dar salto hacia un número
+						branch = branch[configKey];
+						scans["scan"][scans["step"]] += 1;
+
+						// Avisar que se dió un cambio
+						scans["isChange"] = true;
+
+						// Dar paso adelante
+						scans["step"] += 1;
+						scans["action_branch"] = "encontrado";
+					}
+					else {
+						// No se puede proseguir => Cerrado abrupto de la exploración.
+						scans["action_branch"] = "error no está " + configKey + " en '" + branch.text + "'";
+						scans["isChange"] = false;
+						isBusy = false;
+					}
+				}
+				else if (typeof (configKey) == "string") {
+					if (configKey in branch) {
+						// Guardar un registro
+						scans["register"].push(branch);
+
+						// Dar salto hacia una key
+						branch = branch[configKey];
+						scans["scan"][scans["step"]] += 1;
+
+						// Avisar que se dió un cambio
+						scans["isChange"] = true;
+
+						// Dar paso adelante
+						scans["step"] += 1;
+						scans["action_branch"] = "encontrado";
+					}
+					else {
+						// No se puede proseguir => Cerrado abrupto de la exploración.
+						scans["action_branch"] = "error no está " + configKey + " en '" + branch.text + "'";
+						scans["isChange"] = false;
+						isBusy = false;
+					}
+				}
+				else if (isEqual(configKey, [])) {
 					// No hay que hacer nada
 					scans["action_branch"] = "encontrado";
 				}
@@ -82,31 +128,6 @@ function get_next_element(scans = { "step": 0, "scan": [0], "action_branch": "av
 					scans["step"] += 1;
 					if (scans["step"] == configKey.length) {
 						scans["action_branch"] = "encontrado";
-					}
-				}
-				else if (typeof (configKey) == "string") {
-					if (configKey in branch) {
-						// Guardar un registro
-						scans["register"].push(branch);
-
-						// Dar salto hacia una key
-						branch = branch[configKey];
-						scans["scan"][scans["step"]] += 1;
-
-						// Avisar que se dió un cambio
-						scans["isChange"] = true;
-
-						// Dar paso adelante
-						scans["step"] += 1;
-						if (scans["step"] == configKey.length) {
-							scans["action_branch"] = "encontrado";
-						}
-					}
-					else {
-						// No se puede proseguir => Cerrado abrupto de la exploración.
-						scans["action_branch"] = "error no está " + configKey[scans["step"]] + " en '" + branch.text + "'";
-						scans["isChange"] = false;
-						isBusy = false;
 					}
 				}
 				else if (typeof (configKey[scans["step"]]) == "string" || typeof (configKey[scans["step"]]) == "number") {
@@ -182,7 +203,6 @@ function filterCompare(array1, array2, configKey1 = [0], configKey2 = [0], confi
 		isFound,
 		scan_element1,
 		scan_element2,
-		element1 = [], element2 = [],
 		filter_concepts = [];
 
 	// Los datos que ingresan a la función son de tipo array, deberán de recorrerse porque hay que explorar cada una de las posibilidades, a menos que el configKey pida ingreso para acotar búsqueda
@@ -193,37 +213,41 @@ function filterCompare(array1, array2, configKey1 = [0], configKey2 = [0], confi
 		// Hay que decir que hay cambio en el otro, para que se evaluen al comenzar, y decir que ya se usó al ponerlo en false.
 		if (!scans2["isChange"] || scans1["isChange"] == 0) {
 			[scans1, branch1] = get_next_element(scans1, branch1, configKey1);
-
-			if (typeof (branch1) == "string") element1 = [branch1];
-			else element1 = branch1;
 		}
 		if (!scans1["isChange"] || scans2["isChange"] == 0) {
 			[scans2, branch2] = get_next_element(scans2, branch2, configKey2);
-
-			if (typeof (branch2) == "string") element2 = [branch2];
-			else element2 = branch2;
 		}
 
 		// Si hubo algún cambio en alguno de los elementos a comparar => compare.
 		if (scans1["action_branch"].slice(0, 5) != "error" && (scans1["isChange"] || scans2["isChange"])) {
 			// Realizar comparación
 			isFound = false;
-			for (scan_element1 = 0; scan_element1 != element1.length && !isFound; scan_element1++) {
-				for (scan_element2 = 0; scan_element2 != element2.length && !isFound; scan_element2++) {
-					if (element1[scan_element1] == element2[scan_element2]) {
+			if (typeof (branch2) == "number") {
+				if (branch2 >= 0 && branch2 < branch1.length) {
+					// Marcar como encontrado
+					isFound = true;
+					// anexar el concepto encontrado a la lista
+					filter_concepts.push(insert_data(configInsert));
+				}
+			}
+			else if (typeof (branch2) == "string") {
+				for (scan_element1 = 0; scan_element1 != branch1.length && !isFound; scan_element1++) {
+					if (branch2 == branch1[scan_element1]) {
 						// Marcar como encontrado
 						isFound = true;
 						// anexar el concepto encontrado a la lista
-						switch (configInsert) {
-							case "Element1":
-								filter_concepts.push(...array1);
-								break;
-							case "Element2":
-								filter_concepts.push(...array2);
-								break;
-							default:
-								filter_concepts.push(configInsert);
-								break;
+						filter_concepts.push(insert_data(configInsert));
+					}
+				}
+			}
+			else if (Array.isArray(branch2)) {
+				for (scan_element1 = 0; scan_element1 != branch1.length && !isFound; scan_element1++) {
+					for (scan_element2 = 0; scan_element2 != branch2.length && !isFound; scan_element2++) {
+						if (branch1[scan_element1] == branch2[scan_element2]) {
+							// Marcar como encontrado
+							isFound = true;
+							// anexar el concepto encontrado a la lista
+							filter_concepts.push(insert_data(configInsert));
 						}
 					}
 				}
@@ -238,4 +262,16 @@ function filterCompare(array1, array2, configKey1 = [0], configKey2 = [0], confi
 	while (scans1["action_branch"] != "finalizar" || scans2["action_branch"] != "finalizar" || scans1["isChange"] || scans2["isChange"]);
 
 	return filter_concepts;
+
+	function insert_data(configInsert) {
+		// anexar el concepto encontrado a la lista
+		switch (configInsert) {
+			case "Element1":
+				return array1;
+			case "Element2":
+				return array2;
+			default:
+				return configInsert;
+		}
+	}
 }
