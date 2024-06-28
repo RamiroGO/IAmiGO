@@ -48,3 +48,34 @@ let topics = [
 		"type": ["topic"]
 	}
 ]
+
+let models_neuron = [
+	{
+		// Para comparar valores binarios
+		"type":"neuron",
+		"name": "IAmiGO-1",
+		"function": "condicionales",
+		"roots": [1, ]
+	},
+	{
+		// Para comparar valores cuantitativos
+		"type": "neuron",
+		"name": "IAmiGO-2",
+		"function": "operaciones",
+		"roots": [1, ]
+	},
+	{
+		// Para comparar valores cualitativosgggg
+		"type": "neuron",
+		"name": "IAmiGO-3",
+		"function": "etiquetas",
+		"roots": []
+	},
+	{
+		// Para comparar valores pornográficos
+		"type": "neuron",
+		"name": "IAmiGO-4",
+		"function": "porno",
+		"roots": []
+	}
+]

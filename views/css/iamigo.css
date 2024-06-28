@@ -1,0 +1,89 @@
+body {
+  background-color: black;
+}
+.encabezado {
+  margin: auto;
+  text-align: right;
+  color: brown;
+}
+h1,
+.titulo1 {
+  color: orangered;
+  text-align: center;
+}
+h2,
+.titulo2 {
+  color: white;
+}
+.titulo3 {
+  color: sandybrown;
+}
+.soporte {
+  color: aqua;
+  text-align: center;
+}
+.btncentro {
+  text-align: center;
+}
+a.btn1 {
+  background-color: orangered;
+}
+
+button.smallBtn {
+  font-size: 8px;
+}
+
+canvas {
+  border: 1px solid darkblue;
+  background-color: aqua;
+}
+footer {
+  height: 110px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+/* Tags */
+.nav2 {
+  background-color: #00457c;
+  height: 50px;
+  width: 100%;
+}
+.mainmenu {
+  list-style: none;
+  color: white;
+}
+ul {
+  float: right;
+  margin-left: 20px;
+  margin-right: 25px;
+  margin-top: 10px;
+}
+
+table {
+  background-color: #fff;
+  overflow: hidden;
+}
+
+table thead tr th {
+  border: 1px solid red;
+  text-align: center;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: gray;
+}
+
+table tbody tr:hover {
+  background-color: yellow;
+}
+
+table tbody tr td {
+  text-align: right;
+  border: 1px solid blue;
+}
+
+table tbody tr td:hover{
+  background-color: greenyellow;
+}

@@ -123,5 +123,8 @@ let phrases = [
 	{
 		"text": "El verdadero triunfo está en la disciplina",
 		"type": ["phrase"]
+	},
+	{
+		"text": "cuando existe una teoría sobre algo que en realidad se predica con la experiencia, es porque lo que se quiere dar a emtemder es que si algo malo llega a pasar, aparezca un 'te lo dije', por ejemplo, la inestabilidad sistem´tica de la sociedad dado su orden superior de conciencia artificial."
 	}
 ]

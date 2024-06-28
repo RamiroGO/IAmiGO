@@ -1,37 +1,49 @@
-
 // PENDIENTE: Generar imágenes y contenido con IA ChatGPT para la presentación e implementar código para ilustrarlas.
+let pack1 = {
+	'type': 'context',
+	'text': 'Competencia de las IAs',
+	'function': {
+	},
+	'tags': {
+		'include': ['Tecnología'],
+		'exclude': ['Política']
+	}
+}
 
-function showContent(selects_contents) {
-	// selects_contents: [sel_type, sel_text, sel_parraf]
-
-	// interpretar el contenido del texto para definir su valor.
+function make_structConcepts(selects_contents) {
 	let
 		structHTML = "",
-		database_concepts = load_concepts_database(),
-		newConcept = [];
+		database_concepts = load_concepts_database(), newConcept = [];
 
 	// Analizar la petición
 	if (typeof (selects_contents[0]) == "object")
 		selects_contents.forEach(select_contents => {
 			newConcept = filter_select_concepts(database_concepts, select_contents, ["type", "context"]);
-			structHTML = edit_structHTML(structHTML, newConcept, select_contents)
+			structHTML = edit_structHTML(structHTML, newConcept, select_contents);
 		});
 	else {
 		newConcept = filter_select_concepts(database_concepts, selects_contents, ["type", "context"]);
 		structHTML = edit_structHTML(structHTML, newConcept, selects_contents);
 	}
-	
-	// Imprimir
-	document.getElementById("texto").innerHTML = "";
-	if (typeof (structHTML) == "string") {
-		// Imprimir texto singular
-		document.getElementById("texto").innerHTML = structHTML;
-	}
-	else if (typeof (structHTML) == "object") {
-		// Imprimir múltiples líneas o elementos
-		structHTML.forEach(parrafo_valueText => {
-			document.getElementById("texto").innerHTML += parrafo_valueText;
-		});
+	return structHTML;
+}
+
+function server(mode = "tagsOperation save_tags", synapticWeight_operation, selects_contents) {
+	let structHTML;
+
+	// "synaptic_weight" servirá para determinar que clase de filtros se implementarán.
+	switch (mode) {
+		case "tagsOperation":
+			// selects_contents: [sel_type, sel_text, sel_parraf]
+			structHTML = make_structConcepts(selects_contents[0], synapticWeight_operation);
+			// PENDIENTE: Monstruosear la abstracción hasta que parezcan ecuaciones.
+
+			// interpretar el contenido del texto para definir su valor.
+			showHTML(structHTML);
+			break;
+
+		default:
+			break;
 	}
 }
 

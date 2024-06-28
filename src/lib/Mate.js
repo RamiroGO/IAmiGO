@@ -1,0 +1,4 @@
+
+
+const Mate = { };
+export { Mate };

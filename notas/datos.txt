@@ -1,0 +1,23 @@
+* Cuando un lenguaje no es completo debe suplementar sus carencias con operaciones sobre sus propios conceptos.
+
+* Es un error creer que la intuición no hace uso de la memoria o la expereincia para poder encontrar un contexto. 
+
+
+Las maneras de operar:
+* Con resultados predefinidos
+
+* Estadísticas-burdas.
+
+* tagsOperation:
+- Tabla de verdad:
+A 	B 	|	0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15
+0	0	|	0	1	0	1	0	1	0	1	0	1	0	1	0	1	0	1
+0	1	|	0	0	1	1	0	0	1	1	0	0	1	1	0	0	1	1
+1	0	|	0	0	0	0	1	1	1	1	0	0	0	0	1	1	1	1
+1	1	|	0	0	0	0	0	0	0	0	1	1	1	1	1	1	1	1
+
+- Solo usar cuando se requieran resultados discretos, es decir, con valores de 0 y 1.
+- Su uso no implica la implementación del principio del tercer excluido, si se aplica sobre muchos tags.
+
+* Con Ecuaciones Neuronales.
+- Solo usar cuando existe incertidumbre sobre la forma de la fórmula.
