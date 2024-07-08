@@ -29,14 +29,22 @@
   <!-- JAVASCRIPT -->
   <script src="../../src/lib/tool_html.js"></script>
   <script src="../../src/lib/tool_json.js"></script>
+  <script src="../../src/lib/tool_json2.js"></script>
   <script src="../../src/lib/tool_js.js"></script>
   <script src="../../src/lib/gestor_structHTML.js"></script>
+  <script src="../../src/lib/load_database.js"></script>
   
   <!-- DATABASE -->
   <script src="../../database/contexts.js"></script>
   <script src="../../database/concepts.js"></script>
   <script src="../../database/rels_concepts.js"></script>
   <script src="../../database/proyectos.js"></script>
+  <script src="../../database/phrases.js"></script>
+  <script src="../../database/process.js"></script>
+  <script src="../../database/relations.js"></script>
+  <script src="../../database/textos.js"></script>
+  <script src="../../database/tokens.js"></script>
+  <script src="../../database/topics.js"></script>
 </head>
 
 <body>
@@ -78,12 +86,19 @@
   <table class="mx-auto">
     <thead></thead>
     <tbody>
+      <!-- <script>
+        // Lista-registro de tags que ha intruducido el usuario
+        let list_tag_user = [];
+      </script> -->
       <tr>
         <!-- Cuadro de selección del tag para especificar el tipo de dato a ingresar -->
         <td>
           <div class="text-center card-body mx-auto animate__bounceIn
                   card">
             <label for="idSelectArea"> Seleccione Etiquetas </label>
+            <!-- <label id="id_list_user_tags" for="for_show_list_user_tags" style="color: aqua;" title="title_list_user_tags">
+              
+            </label> -->
             <select id="id_sel_tag" name="nameArea" onselect="insert_tag(document.getElementById('id_sel_tag').selectedIndex)" title="--Seleccionar--">
               <option>--Seleccionar--</option>
               <!-- 

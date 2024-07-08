@@ -1,4 +1,3 @@
-
 function scan_subContext() {
 	let list_subcontext = ["sdasd"];
 
@@ -16,10 +15,11 @@ function scan_subContext() {
 
 /**
  * Eliminar Tag de la lista que el usuario generó y reincorporarlo a la lista de select-options
- * @param {*} sel_row_tag
+ * @param {HTMLTableElement} $list_tags elemento de tipo tabla en el html que contiene la lista con el elemento que se desea eliminar
+ * @param {HTMLElement} sel_row_tag elemento html de tipo this
  */
-function delParameter($list_tags, sel_row_tag, list_tag_user) {
-	if ($list_tags) {
+function delParameter($list_tags, sel_row_tag) {
+	if ($list_tags.rows.length > 0) {
 		// Eliminar Row que representa el Tag previamente insertado por el usuario de la tabla de etiquetas en el HTML
 		// El button tiene que subir dos niveles entre las etiquetas del HTML para que se pueda determinar cual fue el Row seleccionado
 		$list_tags.deleteRow(sel_row_tag.parentNode.parentNode.rowIndex);
@@ -30,11 +30,6 @@ function delParameter($list_tags, sel_row_tag, list_tag_user) {
 			document.getElementById('btn_get_tag').hidden = true;
 		}
 	}
-	// Eliminar elemento en el array
-	list_tag_user.splice(sel_row_tag);
-
-	// Actualizar la lista de select-options reincorporando los tags que le corresponde al usuario escoger
-	insert_optionSelect();
 }
 
 /**
@@ -42,7 +37,7 @@ function delParameter($list_tags, sel_row_tag, list_tag_user) {
  * @param {string} text valor que se quiere introducir como una fila con sus propios comandos para trabajar sobre el mismo.
  * @param {string} text_roots valores que se mostrarán en un menú desplegable que estará contenido dentro de la fila
  */
-function make_rowTagHTML(text, text_roots) {
+function $make_rowTag(text, text_roots) {
 	let $td_nameTag, $td_botnDel, $label_param_newRow;
 
 	// Cargar texto del elemento seleccionado por el usuario en un label.
@@ -59,7 +54,10 @@ function make_rowTagHTML(text, text_roots) {
 	$btn_tagDel.type = 'submit'
 	$btn_tagDel.classList.add("smallBtn");
 	$btn_tagDel.value = "x";
-	$btn_tagDel.onclick = function () { delParameter($list_tags, this, list_tag_user); };
+	$btn_tagDel.onclick = function () {
+		delParameter($list_tags, this); // Eliminar elemento en el array
+		list_tag_user = delElementArray(list_tag_user, text);
+	};
 
 	// Permitir al usuario ser mas específico en su Tag.
 	const $select_subTag = document.createElement('select');

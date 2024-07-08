@@ -26,26 +26,26 @@ const
 		"contiene": "contiene"
 	};
 
-const contexts = [
+const db_contexts = [
 	{
 		"text": ["historia"],
 		"relations": [""],
-		"type": ["context"]
+		"type": ["context", "contexto"]
 	},
 	{
 		"text": ["política"],
 		"relations": ["comportamiento humano", "constructo"],
-		"type": ["context"]
+		"type": ["context", "contexto"]
 	},
 	{
 		"text": ["frases"],
 		"relations": ["comportamiento humano", "constructo"],
-		"type": ["context"]
+		"type": ["context", "contexto"]
 	},
 	{
 		"text": ["constructo"],
 		"relations": ["comportamiento humano", "constructo"],
-		"type": ["context"]
+		"type": ["context", "contexto"]
 	}
 ];
 
@@ -89,4 +89,4 @@ const type_razonamiento = [
 	"inductivo",
 	"deductivo",
 	"abductivo"
-]
+];

@@ -11,6 +11,7 @@ const $list_tags = document.getElementById('list_tags');
 ///////////////////////////////
 // Lista-registro de tags que ha intruducido el usuario
 let list_tag_user = [];
+let database_concepts = load_concepts_database();
 
 let cant_tags = 0;
 // Funciones Globales
@@ -52,14 +53,10 @@ $btn_set_tag.addEventListener('click', function () {
     if (!is_exist_tag) {
       list_tag_user.push($select_tag.value);
 
-      let subcontext = ["asd", "das"]
-      // Mostrar la lista de Tags que ha seleccionado el usuario
-      $list_tags.appendChild(make_rowTagHTML($select_tag.value, subcontext));
-
-      const keys_type_neuron = Object.keys(type_neuron);
+      let subcontext = filterCompare(database_concepts, $select_tag.value, [, "type"], [], { "select": "1", "config_select": ["^"] })
       
-      // Modificar la lista de tags principal-inicial en el select-option del usuario
-      $insert_optionSelect($select_tag, keys_type_neuron);
+      // Mostrar la lista de Tags que ha seleccionado el usuario
+      $list_tags.appendChild($make_rowTag($select_tag.value, subcontext));
     }
     else {
       alert('ya existe');
@@ -111,7 +108,10 @@ $btn_get_tag.addEventListener('click', function () {
         $new_btn = document.createElement("button");
         $new_btn.textContent = "Eliminar Campo";
         $new_btn.classList.add("smallBtn");
-        $new_btn.onclick = function () { delParameter($list_tags, this); };
+        $new_btn.onclick = function () {
+          delParameter($list_tags, this);
+        };
+
         $new_td = document.createElement("td");
         $new_td.appendChild($new_btn);
         $new_row.appendChild($new_td);

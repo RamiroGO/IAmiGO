@@ -7,3 +7,17 @@ function isContain(list_tag, value) {
 			is_exist = true;
 	return is_exist;
 }
+
+/**
+ * Eliminar el elemento _value de la lista _array
+ * @param {Array} _array array para filtrar
+ * @param {string} _value elemento a eliminar
+ * */
+function delElementArray(_array, _value) {
+	let new_array = [];
+	_array.forEach(element => {
+		if (element != _value)
+			new_array.push(element);
+	});
+	return new_array;
+}
