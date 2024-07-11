@@ -56,6 +56,318 @@ function make_array_empty(_length, _type) {
 }
 
 // Función Avanzada para comparar dos arrays bajo una configuración preestablecida.
+
+// función para obtener el elemento contenido en una estructura object bajo una configuración preestablecida.
+function get_next_element(scans = { "step": 0, "scan": [0], "action_branch": "avanzar", "register": [], "isChange": true }, branch = [[], "type"], configKey = [0]) {
+	// Inicializar con asumir que no hay cambios.
+	let isBusy = true;
+	scans["isChange"] = false;
+
+	// Proceso previo al ciclo
+	switch (scans["action_branch"]) {
+		case "encontrado":
+			scans["action_branch"] = "retroceder";
+			break;
+		default:
+			// No acceder a mas niveles que los predefinidos
+			if (scans["step"] == scans["scan"].length)
+				scans["action_branch"] = "encontrado";
+
+			if (scans["action_branch"].slice(0, 5) == "error")
+				scans["action_branch"] = "avanzar";
+			break;
+	}
+
+	// Ciclo de Escaneo
+	while (isBusy && scans["action_branch"] != "encontrado") {
+		switch (scans["action_branch"]) {
+			case "avanzar":
+				if (typeof (configKey) == "number") {
+					if (configKey >= 0 && configKey < branch.length) {
+						// Guardar un registro
+						scans["register"].push(branch);
+
+						// Dar salto hacia un número
+						branch = branch[configKey];
+
+						// Hacer el incremento
+						scans["scan"][scans["step"]] += 1;
+
+						// Avisar que se dió un cambio
+						scans["isChange"] = true;
+
+						// Dar paso adelante
+						if (scans["step"] != configKey.length - 1)
+							scans["step"] += 1;
+						scans["action_branch"] = "encontrado";
+					}
+					else {
+						// No se puede proseguir => Cerrado abrupto de la exploración.
+						scans["action_branch"] = "error no está " + configKey + " en '" + branch.text + "'";
+						scans["isChange"] = false;
+						isBusy = false;
+					}
+				}
+				else if (typeof (configKey) == "string") {
+					if (configKey in branch) {
+						// Guardar un registro
+						scans["register"].push(branch);
+
+						// Dar salto hacia una key
+						branch = branch[configKey];
+
+						// Hacer el incremento
+						scans["scan"][scans["step"]] += 1;
+
+						// Avisar que se dió un cambio
+						scans["isChange"] = true;
+
+						// Dar paso adelante
+						if (scans["step"] != configKey.length - 1)
+							scans["step"] += 1;
+						scans["action_branch"] = "encontrado";
+					}
+					else {
+						// No se puede proseguir => Cerrado abrupto de la exploración.
+						scans["action_branch"] = "error no está " + configKey + " en '" + branch.text + "'";
+						scans["isChange"] = false;
+						isBusy = false;
+					}
+				}
+				else if (Array.isArray(configKey)) {
+					if (isEqual(configKey, [])) {
+						// No hay que hacer nada
+						scans["action_branch"] = "encontrado";
+					}
+					else if (isEqual(configKey[scans["step"]], [])) {
+						// Guardar un registro
+						scans["register"].push(branch);
+
+						// Dar salto hacia un paso numérico.
+						branch = branch[scans["scan"][scans["step"]]]
+
+						// Hacer el incremento
+						scans["scan"][scans["step"]] += 1;
+
+						// avisar que se dió un cambio
+						scans["isChange"] = true;
+
+						// Dar paso adelante
+						if (scans["step"] != configKey.length - 1)
+							scans["step"] += 1;
+						else
+							scans["action_branch"] = "encontrado";
+					}
+					else if (isContain(["string", "number"], typeof (configKey[scans["step"]]))) {
+						if (configKey[scans["step"]] in branch) {
+							if (Array.isArray(branch) && (scans["scan"][scans["step"]] == branch.length)) {
+								scans["action_branch"] = "retroceder";
+							}
+							else if (typeof (branch) == "string") {
+								scans["action_branch"] = "encontrado";
+
+								// Avisar que se dió un cambio
+								scans["isChange"] = true;
+							}
+							else {
+								// Guardar un registro
+								scans["register"].push(branch);
+
+								// Dar salto hacia adelante en el key predefinido.
+								branch = branch[configKey[scans["step"]]];
+
+								// Hacer el incremento: Se presume que solo hay un elemento
+								scans["scan"][scans["step"]] += 1;
+
+								// Avisar que se dió un cambio
+								scans["isChange"] = true;
+
+								// Dar paso adelante
+								// - Aunque exista un solo elemento, no significa que se deba retroceder siempre que aparezca este tipo de keys
+								if (scans["step"] != configKey.length - 1)
+									scans["step"] += 1;
+								else
+									scans["action_branch"] = "encontrado";
+							}
+						}
+						else {
+							// No se puede proseguir => Cerrado abrupto de la exploración.
+							scans["action_branch"] = "error no está " + configKey[scans["step"]] + " en '" + branch.text + "'";
+
+							// Hacer el incremento
+							scans["scan"][scans["step"]] += 1;
+
+							// scans["action_branch"] = "encontrado";
+							scans["action_branch"] = "retroceder"
+
+							// Decir que se dió un cambio
+							scans["isChange"] = true;
+							isBusy = false;
+						}
+					}
+					else if (typeof (configKey[scans["step"]]) == "undefined") {
+						// En este caso, se debe recorrer la chingada de manera numérica
+						// Guardar un registro
+						scans["register"].push(branch)
+
+						// Dar salto hacia una key; pero la key es numérica y está inventada
+						// porque no está explícita en ninguna parte, por lo que se implementará el mismo scans["step"] para contabilizar los tramos
+						branch = branch[scans["scan"][scans["step"]]];
+
+						// Hacer el incremento
+						scans["scan"][scans["step"]] += 1;
+						if (scans["scan"][scans["step"]] == scans["register"][scans["register"].length - 1].length) {
+							scans["action_branch"] = "retroceder";
+						}
+
+						// Avisar que se dió un cambio
+						scans["isChange"] = true;
+
+						// Dar paso adelante
+						if (scans["step"] != configKey.length)
+							scans["step"] += 1;
+						else
+							scans["action_branch"] = "encontrado";
+					}
+				}
+				break;
+			case "retroceder":
+				// dar un paso atrás, o finalizar si ya se ha recorrido todo.
+				if (scans["step"] == 0)
+					scans["action_branch"] = "finalizar";
+				else {
+					// establecer que se dió un cambio (A menos que se vaya a finalizar)
+					scans["isChange"] = true;
+					
+					// Proceso de retroceso cíclico
+					let isBusy_retro = true
+					do {
+						// Dependiendo del caso, la condicional de retroceso es diferente.
+						if (isEqual(configKey[scans["step"]], [])) {
+							// Caso de que el config sea vacio, es un caso numérico, dependerá de una evaluación especial.
+							if (scans["scan"][scans["step"]] != scans["register"][scans["register"].length - 1].length) {
+								isBusy_retro = false;
+							}
+							else {
+								// reiniciar el step presente
+								scans["scan"][scans["step"]] = 0;
+								// Hacer el decremento
+								if (scans["step"] != 0)
+									scans["step"] -= 1;
+								else {
+									isBusy_retro = false;
+									isBusy = false;
+									scans["action_branch"] = "finalizar";
+									scans["isChange"] = false;
+								}
+							}
+						}
+						else if (typeof (configKey[scans["step"]]) == "undefined") {
+							// Caso de que el config sea "undefined", es un caso numérico, dependerá de una evaluación especial sobre el branch.
+							if (typeof (branch) == "string") {
+								// Solo hay un elemento => Hay que retroceder
+								// reiniciar el step presente	
+								scans["scan"][scans["step"]] = 0;
+								// Hacer el decremento
+								if (scans["step"] != 0)
+									scans["step"] -= 1;
+								else {
+									isBusy_retro = false;
+									isBusy = false;
+									scans["action_branch"] = "finalizar";
+									scans["isChange"] = false;
+								}
+							}
+							else if (Array.isArray(branch)) {
+								if (scans["scan"][scans["step"]] != branch.length) {
+									isBusy_retro = false;
+								}
+								else {
+									// reiniciar el step presente
+									scans["scan"][scans["step"]] = 0;
+									// Hacer el decremento
+									if (scans["step"] != 0)
+										scans["step"] -= 1;
+									else {
+										isBusy_retro = false;
+										isBusy = false;
+										scans["action_branch"] = "finalizar";
+										scans["isChange"] = false;
+									}
+								}
+							}
+						}
+						else if (isContain(["string", "number"], typeof (configKey[scans["step"]]))) {
+							// Validar el tipo de "branch"
+							if (isContain(["string", "number"], typeof (branch))) {
+								// El branch es un texto o un número concreto => Retroceder
+								// reiniciar el step presente
+								scans["scan"][scans["step"]] = 0;
+								// Hacer el decremento
+								if (scans["step"] != 0)
+									scans["step"] -= 1;
+								else {
+									isBusy_retro = false;
+									isBusy = false;
+									scans["action_branch"] = "finalizar";
+									scans["isChange"] = false;
+								}
+							}
+							else if (Array.isArray(branch[configKey[scans["step"]]])) {
+								// Caso en que sea una key concreta, de tipo numérico o texto, la cantidad de elementos se define por el mismo
+								if (scans["scan"][scans["step"]] != 1) {
+									isBusy_retro = false;
+								}
+								else {
+									// reiniciar el step presente
+									scans["scan"][scans["step"]] = 0;
+									// Hacer el decremento
+									if (scans["step"] != 0)
+										scans["step"] -= 1;
+									else {
+										isBusy_retro = false;
+										isBusy = false;
+										scans["action_branch"] = "finalizar";
+										scans["isChange"] = false;
+									}
+								}
+							}
+							else {
+								// La key es un texto o un número concreto => Retroceder
+								// reiniciar el step presente
+								scans["scan"][scans["step"]] = 0;
+								// Hacer el decremento
+								if (scans["step"] != 0)
+									scans["step"] -= 1;
+								else {
+									isBusy_retro = false;
+									isBusy = false;
+									scans["action_branch"] = "finalizar";
+									scans["isChange"] = false;
+								}
+							}
+						}
+
+						// Si hay retroceso en curso => reiniciar el scan presente
+						if (isBusy_retro) {
+							// Retroceder el branch
+							branch = scans["register"].pop();
+						}
+					} while (isBusy_retro);
+				}
+				// Avanzar para que no siga retrocediendo por su cuenta
+				scans["action_branch"] = "avanzar";
+				break;
+			case "encontrado":
+				scans["action_branch"] = "retroceder";
+				break;
+		}
+	}
+
+	return [scans, branch];
+}
+
+// Comparación Avanzada de Arrays
 function filterCompare(array1, array2, configKey1 = [0], configKey2 = [0], configInsert = { "select": "array2", "config_select": ["*", ""] }) {
 	let
 		branch1 = array1,
@@ -96,7 +408,10 @@ function filterCompare(array1, array2, configKey1 = [0], configKey2 = [0], confi
 		initialice = false;
 
 		// Si hubo algún cambio en alguno de los elementos a comparar => compare.
-		if (scans1["action_branch"].slice(0, 5) != "error" && (scans1["isChange"] || scans2["isChange"])) {
+		// -- Aún cuando existan errores, hay que seguir adelante, el show debe continuar.
+		// ---- if (scans1["action_branch"].slice(0, 5) != "error" && (scans1["isChange"] || scans2["isChange"])) {
+
+		if (scans1["isChange"] || scans2["isChange"]) {
 			// Realizar comparación
 			isFound = false;
 			if (typeof (branch2) == "number") {
