@@ -1,3 +1,38 @@
+function copy_data(data = {}) {
+	let result, value_data;
+
+	if (Array.isArray(data)) {
+		result = [];
+		result.length = data.length;
+
+		for (let scan = 0; scan < data.length; scan++) {
+			// Recursividad por objeto
+			value_data = data[scan];
+			if (typeof (data[scan]) == "object")
+				value_data = copy_data(value_data);
+
+			// guardar dato
+			result[scan] = value_data;
+		}
+	}
+	else if (typeof (data) == "object") {
+		result = {};
+
+		for (const scan in data) {
+			if (Object.hasOwnProperty.call(data, scan)) {
+				// Recursividad por objeto
+				value_data = data[scan];
+				if (typeof (data[scan]) == "object")
+					value_data = copy_data(value_data);
+
+				// guardar dato
+				result[scan] = value_data
+			}
+		}
+	}
+	return result;
+}
+
 // Puede comparar dos arrays simples.
 function isEqual(object1 = { "key1": 0, "key2": 0 }, object2 = { "key1": 0, "key2": 0 }) {
 	let is_equal, scan;
@@ -16,6 +51,7 @@ function isEqual(object1 = { "key1": 0, "key2": 0 }, object2 = { "key1": 0, "key
 	}
 	return is_equal;
 }
+
 // Puede comparar dos arrays simples.
 function notEqual(object1 = { "key1": 0, "key2": 0 }, object2 = { "key1": 0, "key2": 0 }) {
 	let not_equal, scan;
@@ -48,6 +84,7 @@ function make_array_empty(_length, _type) {
 				new_array.push("");
 				break;
 			default:
+				new_array.push(_type);
 				break;
 		}
 	}
@@ -238,7 +275,7 @@ function get_next_element(scans = { "step": 0, "scan": [0], "action_branch": "av
 				else {
 					// establecer que se dió un cambio (A menos que se vaya a finalizar)
 					scans["isChange"] = true;
-					
+
 					// Proceso de retroceso cíclico
 					let isBusy_retro = true
 					do {
@@ -473,20 +510,21 @@ function filterCompare(array1, array2, configKey1 = [0], configKey2 = [0], confi
 
 function insert_data(configInsert = { "select": "branch1", "config_select": ["^"] }, register_scans1, register_scans2) {
 	// anexar el concepto encontrado a la lista
-	let _value, select_level, simbol_config_select;
+	let _register, select_level, simbol_config_select, result;
 	switch (configInsert["select"]) {
 		case "1":
-			_value = register_scans1;
+			_register = register_scans1;
 			break;
 		case "2":
-			_value = register_scans2;
+			_register = register_scans2;
 			break;
 		default:
-			_value = configInsert["select"];
+			_register = configInsert["select"];
 			break;
 	}
 
-	select_level = _value.length;
+	select_level = _register.length;
+	result = _register;
 	// código de configuración para saber cual valor retornar
 	for (let scan_config_select = 0; scan_config_select != configInsert["config_select"].length; scan_config_select++) {
 		simbol_config_select = configInsert["config_select"][scan_config_select];
@@ -497,8 +535,13 @@ function insert_data(configInsert = { "select": "branch1", "config_select": ["^"
 		else if (simbol_config_select == "*") {
 			// No se me ocurre nada para este símbolo :/
 		}
+		else if (simbol_config_select in _register[select_level]) {
+			result = _register[select_level][simbol_config_select];
+		}
 	}
 
 	// Ya conocido el select_level, obtener el valor que se desea retornar
-	return _value[select_level];
+	return result;
 }
+
+export { make_array_empty, copy_data };

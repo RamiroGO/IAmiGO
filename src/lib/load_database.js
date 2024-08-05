@@ -10,7 +10,8 @@ function load_concepts_database() {
 		relations,
 		textos,
 		tokens,
-		topics
+		topics,
+		type_neuron
 	)
 }
 //#endregion

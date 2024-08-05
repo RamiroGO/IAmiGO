@@ -10,6 +10,12 @@ let phrases = [
 		"use": [0, "yes", "Introducción a las IA's"],
 	},
 	{
+		"text": [
+			"Conseguir buenas ideas se trata de tomar la mayor candidad de consideraciones posibles, adoptar la mayor cantidad de factores y variables",
+			"Muchos factores pueden tener relaciones contrapuestas, inversas que requerirán de una toma de decisión basada en la prioridad o en la logística"
+		],
+	},
+	{
 		"text": ["Sacrificar soportabilidad por velocidad."],
 		"context": [""],
 		"type": ["phrase"],

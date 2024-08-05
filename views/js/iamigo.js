@@ -53,7 +53,7 @@ $btn_set_tag.addEventListener('click', function () {
     if (!is_exist_tag) {
       list_tag_user.push($select_tag.value);
 
-      let subcontext = filterCompare(database_concepts, $select_tag.value, [, "type"], [], { "select": "1", "config_select": ["^"] })
+      let subcontext = filterCompare(database_concepts, $select_tag.value, [, "type"], [], { "select": "1", "config_select": ["^", "text"] })
       
       // Mostrar la lista de Tags que ha seleccionado el usuario
       $list_tags.appendChild($make_rowTag($select_tag.value, subcontext));

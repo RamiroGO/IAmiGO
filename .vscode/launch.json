@@ -4,28 +4,20 @@
     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    
         {
-            "name": "Attach to Chrome",
-            "port": 9222,
-            "request": "attach",
-            "type": "pwa-chrome",
-            "webRoot": "${workspaceFolder}"
-        },
-        {
-            "name": "ts-node",
             "type": "node",
             "request": "launch",
-            "args": [
-                "${relativeFile}"
-            ],
-            "runtimeArgs": [
-                "-r",
-                "ts-node/register"
-            ],
-            "cwd": "${workspaceRoot}",
+            "name": "Launch Current File",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}",
             "protocol": "inspector",
-            "internalConsoleOptions": "openOnSessionStart"
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "showAsyncStacks": true,
+            "variablesReference": {
+                "hidePrototype": true
+            }
         }
     ]
 }

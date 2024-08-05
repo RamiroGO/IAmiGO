@@ -1,3 +1,7 @@
+// Operadores:
+// * Son los que determinan la forma de la sitaxis
+// * le darán la forma a la manera en la que se procesarán los datos.
+
 const
 	type_neuron = {
 		"contexto": "contexto",
@@ -24,33 +28,8 @@ const
 		"pertenece": "pertenece",
 		"no pertenece": "no pertenece",
 		"contiene": "contiene"
-	};
-
-const db_contexts = [
-	{
-		"text": ["historia"],
-		"relations": [""],
-		"type": ["context", "contexto"]
 	},
-	{
-		"text": ["política"],
-		"relations": ["comportamiento humano", "constructo"],
-		"type": ["context", "contexto"]
-	},
-	{
-		"text": ["frases"],
-		"relations": ["comportamiento humano", "constructo"],
-		"type": ["context", "contexto"]
-	},
-	{
-		"text": ["constructo"],
-		"relations": ["comportamiento humano", "constructo"],
-		"type": ["context", "contexto"]
-	}
-];
-
-
-const context_list = [
+	name_context_list = [
 	/* 00  */  "Científico",
 	/* 01  */  "Matemáticas",
 	/* 02  */  "Geometría",
@@ -62,6 +41,33 @@ const context_list = [
 	/* 08  */  "Filosofía",
 	/* 09  */  "Economía",
 	/* 10  */  "Gastronomía"
+];;
+
+let db_contexts = [
+	{
+		"text": ["Científico"],
+		"type": ["context", "contexto"]
+	},
+	{
+		"text": ["historia"],
+		"type": ["context", "contexto"],
+		"topics": [""],
+	},
+	{
+		"text": ["política"],
+		"type": ["context", "contexto"],
+		"topics": ["comportamiento humano", "constructo"],
+	},
+	{
+		"text": ["frases"],
+		"type": ["context", "contexto"],
+		"topics": ["comportamiento humano", "constructo"],
+	},
+	{
+		"text": ["constructo"],
+		"type": ["context", "contexto"],
+		"topics": ["comportamiento humano", "constructo"],
+	}
 ];
 
 /** Tipos de Fundamentos */
