@@ -1,35 +1,77 @@
-function copy_data(data = {}) {
-	let result, value_data;
+import { getIndex, isContain } from "./tool_javascript.js";
+
+function copy_data(data = {}, configs_exception_keys = [{ keys: [""], level: 0, fcn: (() => { }), parameter_fcn: [] }], __cicles = { level: 0, keys: [[]], fcn: [[]], parameter_fcn: [] }) {
+	let result, value_data, scan_data;
+
+	// Si no se había hecho antes => Buscar todos los keys correspondientes con este level:
+	if (__cicles.keys[__cicles.level].length === 0) {
+		while (__cicles.keys.length <= __cicles.level) {
+			__cicles.keys[__cicles.level] = [];
+			__cicles.fcn[__cicles.level] = [];
+		}
+
+		for (let scan_configs_exception_keys = 0; scan_configs_exception_keys != configs_exception_keys.length; scan_configs_exception_keys++) {
+			if (configs_exception_keys[scan_configs_exception_keys].level == __cicles.level) {
+				for (let scan_keys_excep = 0; scan_keys_excep < configs_exception_keys[scan_configs_exception_keys].keys.length; scan_keys_excep++) {
+					const key_exception = configs_exception_keys[scan_configs_exception_keys].keys[scan_keys_excep];
+
+					if (!isContain(__cicles.keys, key_exception)) {
+						__cicles.keys[__cicles.level].push(key_exception);
+						__cicles.fcn[__cicles.level].push(configs_exception_keys[scan_configs_exception_keys].fcn)
+						__cicles.parameter_fcn = configs_exception_keys[scan_configs_exception_keys].parameter_fcn;
+					}
+				}
+			}
+		}
+	}
 
 	if (Array.isArray(data)) {
 		result = [];
 		result.length = data.length;
-
-		for (let scan = 0; scan < data.length; scan++) {
+		// En los Array no hay keys para comparar excepciones
+		for (scan_data = 0; scan_data != data.length; scan_data++) {
 			// Recursividad por objeto
-			value_data = data[scan];
-			if (typeof (data[scan]) == "object")
-				value_data = copy_data(value_data);
+			value_data = data[scan_data];
 
-			// guardar dato
-			result[scan] = value_data;
+			if (Array.isArray(value_data))
+				// guardar dato
+				result[scan_data] = copy_data(value_data, configs_exception_keys, __cicles);
+			else if (typeof (value_data) == "object")
+				// guardar dato
+				result[scan_data] = copy_data(value_data, configs_exception_keys, __cicles);
+			else
+				// guardar dato
+				result[scan_data] = value_data;
 		}
 	}
 	else if (typeof (data) == "object") {
 		result = {};
+		let keys_data = Object.keys(data), key_data;
 
-		for (const scan in data) {
-			if (Object.hasOwnProperty.call(data, scan)) {
+		for (scan_data = 0; scan_data != keys_data.length; scan_data++) {
+			key_data = keys_data[scan_data];
+
+			if (isContain(__cicles.keys[__cicles.level], key_data)) {
+				const fcn_ = __cicles.fcn[__cicles.level][getIndex(__cicles.keys[__cicles.level], key_data)]
+				result[key_data] = fcn_(data[key_data], __cicles.parameter_fcn);
+			}
+			else {
 				// Recursividad por objeto
-				value_data = data[scan];
-				if (typeof (data[scan]) == "object")
-					value_data = copy_data(value_data);
-
-				// guardar dato
-				result[scan] = value_data
+				value_data = data[key_data];
+				if (Array.isArray(value_data))
+					// guardar dato
+					result[key_data] = copy_data(value_data, configs_exception_keys, __cicles);
+				else if (typeof (value_data) == "object")
+					// guardar dato
+					result[key_data] = copy_data(value_data, configs_exception_keys, __cicles);
+				else
+					// guardar dato
+					result[key_data] = value_data
 			}
 		}
 	}
+	else
+		result = data;
 	return result;
 }
 
@@ -83,6 +125,9 @@ function make_array_empty(_length, _type) {
 			case "string":
 				new_array.push("");
 				break;
+			case "array":
+				new_array.push([]);
+				break;
 			default:
 				new_array.push(_type);
 				break;
@@ -90,6 +135,12 @@ function make_array_empty(_length, _type) {
 	}
 
 	return new_array;
+}
+
+
+// Función para obtener el valor anidado
+function getNestedValue(obj, path) {
+	return path.reduce((acc, key) => (acc && acc[key] !== undefined) ? acc[key] : undefined, obj);
 }
 
 // Función Avanzada para comparar dos arrays bajo una configuración preestablecida.
@@ -544,4 +595,48 @@ function insert_data(configInsert = { "select": "branch1", "config_select": ["^"
 	return result;
 }
 
-export { make_array_empty, copy_data };
+function getConsecutiveMatches(array, propertyPath, max_skipIgnore=0, targetValue, searchFromEnd = true, resultProperty = null) {
+	if (!Array.isArray(array) || array.length === 0) return [];
+
+	let result = [];
+	let startIndex, endIndex, increment_step, cant_skipIgnore=0;
+
+	// Definir índices y pasos según la dirección de búsqueda
+	if (searchFromEnd) {
+		startIndex = array.length - 1;
+		endIndex = -1;
+		increment_step = -1;
+	} else {
+		startIndex = 0;
+		endIndex = array.length;
+		increment_step = 1;
+	}
+
+	// Recorre el array y busca elementos consecutivos que coincidan
+	for (let i = startIndex; i !== endIndex; i += increment_step) {
+		let valueToCompare = getNestedValue(array[i], propertyPath);
+		if (valueToCompare === targetValue) {
+			if (resultProperty) {
+				// Extrae el valor del resultProperty
+				let extractedValue = getNestedValue(array[i], resultProperty);
+				if (extractedValue !== undefined) {
+					result.push(extractedValue);
+				}
+			} else {
+				result.push(array[i]);
+			}
+		}
+		else if (cant_skipIgnore !== max_skipIgnore) {
+			cant_skipIgnore++;
+		}
+		else {
+			break;
+		}
+	}
+
+	// Devuelve el resultado; si se buscó desde el final, invierte el array para mantener el orden
+	return searchFromEnd ? result.reverse() : result;
+}
+
+
+export { make_array_empty, copy_data, getNestedValue, getConsecutiveMatches };

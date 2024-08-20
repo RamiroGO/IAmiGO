@@ -132,5 +132,11 @@ let phrases = [
 	},
 	{
 		"text": "cuando existe una teoría sobre algo que en realidad se predica con la experiencia, es porque lo que se quiere dar a emtemder es que si algo malo llega a pasar, aparezca un 'te lo dije', por ejemplo, la inestabilidad sistem´tica de la sociedad dado su orden superior de conciencia artificial."
+	},
+	{
+		"text": ["Teoría del finito causal", "tiempo infinito", "cosas finitas", "t=o", "momentos fractales"]
+	},
+	{
+		"text": ["No se debe recurrir a conclusiones lógicas, basadas en la razón, para dar certeza sobre los hechos de la realidad, solo generar conocimientos sobre los fenómenos que los generan a partir de las experiencias."]
 	}
 ]

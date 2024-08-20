@@ -1,4 +1,5 @@
-import { tree2chain, chain2tree } from "./tool_javascript.js";
+import { desplazar_matriz_soul } from "./tools_trees/tool_soul.js";
+import { isContain } from "./tool_javascript.js";
 
 function round_math(coords = [0.0, 0.0]) {
     let result = []
@@ -8,28 +9,83 @@ function round_math(coords = [0.0, 0.0]) {
     return result;
 }
 
-function desplazar_vector(matriz = [], despla = 1) {
-    let
-        result = [],
-        scan_matriz = 0
-    result.length = matriz.length;
-    if (typeof (despla) != "number")
-        console.alert("el desplazamiento en un vector debe ser numérico");
+function increment_vector(vector = [], increment = 1, mode = "end2ini single truncate wrap_around", range_vector = [], exclude_indices = []) {
+    let result = [], index, carry, single_done = false;
+    result.length = vector.length;
 
-    // Llenar los primeros con los últimos
-    for (; scan_matriz != matriz.length - despla; scan_matriz++)
-        result[scan_matriz] = matriz[scan_matriz + despla];
-    // Llenar los últimos con los primeros
-    for (; scan_matriz != matriz.length; scan_matriz++)
-        result[scan_matriz] = matriz[scan_matriz - matriz.length + 1];
+    if (typeof (mode) == "string")
+        mode = mode.split(" ");
+
+    switch (mode[0]) {
+        case "independent":
+            for (index = 0; index != vector.length; index++) {
+                if (!exclude_indices.includes(index)) {
+                    if (isContain(mode, "wrap_around")) {
+                        result[index] = (vector[index] + increment) % range_vector[index];
+                    } else {
+                        result[i] = Math.min(vector[i] + inc_vector[i], range_vector[i] - 1);
+                    }
+                    // Si hay single => Cerrar ciclo
+                    if (isContain(mode, "single"))
+                        index = vector.length - 1;
+                } else {
+                    result[index] = vector[index];
+                }
+            }
+            break;
+
+        case "end2ini":
+            carry = increment;
+            for (index = vector.length - 1; index != -1; index--) {
+                if (!exclude_indices.includes(index) && !single_done) {
+                    result[index] = vector[index] + carry;
+                    carry = Math.floor(result[index] / range_vector[index]);
+                    if (isContain(mode, "wrap_around")) {
+                        result[index] = result[index] % range_vector[index];
+                        if (isContain(mode, "single"))
+                            single_done = true;
+                    }
+                    else {
+                        result[index] = Math.min(result[index], range_vector[index] - 1);
+                    }
+                }
+                else {
+                    result[index] = vector[index];
+                }
+            }
+
+            if (carry != 0 && !isContain(mode, "truncate"))
+                result.unshift(carry);
+            break;
+
+        case "ini2end":
+            carry = increment;
+            for (index = 0; index != vector.length; index++) {
+                if (!exclude_indices.includes(index) && !single_done) {
+                    result[index] = vector[index] + carry;
+                    carry = Math.floor(result[index] / range_vector[index]);
+                    if (isContain(mode, "wrap_around")) {
+                        result[index] = result[index] % range_vector[index];
+                        if (isContain(mode, "single"))
+                            single_done = true;
+                    }
+                    else {
+                        result[index] = Math.min(result[index], range_vector[index] - 1);
+                    }
+                } else {
+                    result[index] = vector[index];
+                }
+            }
+
+            if (carry != 0 && !isContain(mode, "truncate"))
+                result.push(carry);
+            break;
+    }
 
     return result;
 }
 
-function desplazar_matriz(matriz, desplamientos) {
-    let tree2 = chain2tree(tree2chain(matriz, "branch"));
-    return tree2;
-}
+export { increment_vector }
 
 // Ejemplo de uso:
 const matriz = [
@@ -39,7 +95,7 @@ const matriz = [
 ];
 
 const desplazar = [1, 1, 1];
-const resultado = desplazar_matriz(matriz, desplazar);
+const resultado = desplazar_matriz_soul(matriz, desplazar);
 console.log(JSON.stringify(resultado, null, 2));
 
 
