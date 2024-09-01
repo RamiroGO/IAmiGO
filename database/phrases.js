@@ -137,6 +137,10 @@ let phrases = [
 		"text": ["Teoría del finito causal", "tiempo infinito", "cosas finitas", "t=o", "momentos fractales"]
 	},
 	{
+		"text": ["Cuando se comienza un código, se sigue un proceso: 1. Plantear un flujo de ideas en las instrucciones. Plantear un flujo de ideas en las variables. 3. Establecer los diferentes casos de los valores de las variables que terminarán influyendo sobre el flujo de las instrucciones. 4. Desarrollar el flujo de las instrucciones. 5. Optimizar el código."],
+		"context":["programación"]
+	},
+	{
 		"text": ["No se debe recurrir a conclusiones lógicas, basadas en la razón, para dar certeza sobre los hechos de la realidad, solo generar conocimientos sobre los fenómenos que los generan a partir de las experiencias."]
 	}
 ]

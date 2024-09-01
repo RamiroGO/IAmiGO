@@ -98,4 +98,12 @@ function append_register(register = [{ value: 0, soul: { keys: [], level: 0 } }]
     return register;
 }
 
-export { isContain, delElementArray, isEqual, getIndex, append_register }
+function expand_arrays(array_scans = [], inc_length = 0, value_insert = 0) {
+	array_scans.forEach(scans => {
+		while (scans.scan.length <= scans.level + inc_length)
+			scans.scan.push(value_insert);
+	});
+	return array_scans;
+}
+
+export { isContain, delElementArray, isEqual, getIndex, append_register, expand_arrays }

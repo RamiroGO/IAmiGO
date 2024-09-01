@@ -639,4 +639,31 @@ function getConsecutiveMatches(array, propertyPath, max_skipIgnore=0, targetValu
 }
 
 
-export { make_array_empty, copy_data, getNestedValue, getConsecutiveMatches };
+function into_branch_scans(scans, path_key = "") {
+	if (path_key != "") {
+		// Añadir al Registro
+		scans.register.push(scans.branch[path_key]);
+		// Avanzar al branch avisado como un primer nivel de key por el path_root, dado es de tipo Array.
+		scans.branch = scans.branch[path_key];
+	}
+	else {
+		// Añadir al Registro
+		// - Se registra el branch actual para retroceder más tarde
+		scans.register.push(scans.branch);
+	}
+	
+	// Avanzar al siguiente level de anidamiento
+	scans.branch = scans.branch[scans.scan[scans.level]];
+	// Incrementar el índice de escaneo y el nivel:
+	// - Incrementar el contador de branchs recorridas en el scan[level]
+	// - Se realizan los incrementos para indicar en donde se debe ingresar en la próxima iteración que se regrese al presente branch/nodo
+	scans.scan[scans.level]++;
+	
+	// No hay análisis de desbordamiento (de desbordarse el índice => saber que se deberá de dar la orden de retroceder)
+	// - Dado el ingreso al elemento anidado => Incrementar el level
+	scans.level++;
+	
+	return scans;
+}
+
+export { make_array_empty, copy_data, getNestedValue, getConsecutiveMatches, into_branch_scans };

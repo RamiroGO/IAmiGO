@@ -1,6 +1,7 @@
 import { tree2chain, chain2tree } from "./tool_tree.js";
 import { desplazar_vector } from "../tool_vector_js.js";
 import { copy_data } from "../tool_json.js";
+import { copy_tree } from "./tool_tree.js";
 
 function desplazar_vector_soul(vector_soul = { value: [], soul: { id: 0, level: 0, keys: [] } }, despla = 1) {
     let result = { value: [], soul: { tree: [], level: 0, keys: [] } };
@@ -35,9 +36,11 @@ function desplazar_matriz_soul(matriz, desplamientos) {
         }
     );
 
-    // const chain_desplazada = desplazar_vector(values_chain, desplamientos);
     let tree2 = chain2tree(desplazado_values_chain);
-    return tree2;
+
+    let tree3 = copy_tree(tree2, ["value"]);
+
+    return tree3;
 }
 
 
